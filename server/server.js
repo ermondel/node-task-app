@@ -1,26 +1,8 @@
-var mongoose = require('mongoose');
+var { mongoose } = require('./db/mongoose');
+var { Todo }     = require('./models/todo');
+var { User }     = require('./models/user');
 
-const opt = { useNewUrlParser: true };
-
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp', opt);
-
-// var Todo = mongoose.model('Todo', {
-//     text: {
-//         type: String,
-//         required: true,
-//         minlength: 1,
-//         trim: true
-//     },
-//     completed: {
-//         type: Boolean,
-//         default: false
-//     },
-//     completedAt: {
-//         type: Number,
-//         default: null
-//     }
-// });
+console.log('ok');
 
 // var newTodo = new Todo({
 //     text: 'Cook dinner'
@@ -43,22 +25,13 @@ mongoose.connect('mongodb://localhost:27017/TodoApp', opt);
 //     console.log(error);
 // });
 
-var User = mongoose.model('User', {
-    email: {
-        type: String,
-        required: true,
-        minlength: 1,
-        trim: true
-    },
-});
+// var newUser = new User({
+//     email: 'example@gmail.com'
+// });
 
-var newUser = new User({
-    email: 'example@gmail.com'
-});
-
-newUser.save().then(doc => {
-    console.log('Saved todo', doc);
-}, error => {
-    console.log('Unable to save User');
-    console.log(error);
-});
+// newUser.save().then(doc => {
+//     console.log('Saved todo', doc);
+// }, error => {
+//     console.log('Unable to save User');
+//     console.log(error);
+// });
