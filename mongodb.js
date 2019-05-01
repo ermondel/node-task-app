@@ -26,15 +26,31 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log(error);
     // });
 
-    const updateMany = db.collection('tasks').updateMany(
-        { completed: false },
-        { $set: { completed: true }
-    });
+    // const updateMany = db.collection('tasks').updateMany(
+    //     { completed: false },
+    //     { $set: { completed: true }
+    // });
 
-    updateMany.then(result => {
-        console.log(`successfully found and changed: ${result.matchedCount}/${result.modifiedCount}`);
+    // updateMany.then(result => {
+    //     console.log(`successfully found and changed: ${result.matchedCount}/${result.modifiedCount}`);
+    // }).catch(error => {
+    //     console.log('update error');
+    // });
+
+    // db.collection('users').deleteMany(
+    //     { age: 100 }
+    // ).then(result => {
+    //     console.log(`successfully deleted: ${result.deletedCount}`);
+    // }).catch(error => {
+    //     console.log('delete error');
+    // });
+
+    db.collection('tasks').deleteOne(
+        { description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." }
+    ).then(result => {
+        console.log(`successfully deleted: ${result.deletedCount}`);
     }).catch(error => {
-        console.log('update error');
+        console.log('delete error');
     });
 
     client.close();
