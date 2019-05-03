@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
@@ -6,8 +7,27 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
 });
 
 const User = mongoose.model('User', {
-    name: { type: String },
-    age: { type: Number }
+    name: { 
+        type: String,
+        required: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) throw new Error('Email is invalid');
+        }
+    },
+    age: { 
+        type: Number,
+        default: 0,
+        validate(value) {
+            if (value < 0) throw new Error('Age must be a positive number');
+        }
+    }
 });
 
 // const me = new User({
@@ -15,24 +35,30 @@ const User = mongoose.model('User', {
 //     age: 42
 // });
 
-// me.save().then(() => {
-//     console.log('save ok', me);
-// }).catch(error => {
-//     console.log(error.name + ':', error._message);
-// });
+const me = new User({
+    name: '    Johannes Kepler ',
+    email: 'JOHANNES@MAIL.COM'
+});
+
+me.save().then(() => {
+    console.log('save ok', me);
+}).catch(error => {
+    console.log(error.name + ':', error._message);
+    console.log(error.errors);
+});
 
 const Task = mongoose.model('Task', {
     description: { type: String },
     completed: { type: Boolean },
 });
 
-const tsk = new Task({
-    description: "Foobar",
-    completed: false
-});
+// const tsk = new Task({
+//     description: "Foobar",
+//     completed: false
+// });
 
-tsk.save().then(() => {
-    console.log('save ok', tsk);
-}).catch(error => {
-    console.log(error.name + ':', error._message);
-});
+// tsk.save().then(() => {
+//     console.log('save ok', tsk);
+// }).catch(error => {
+//     console.log(error.name + ':', error._message);
+// });

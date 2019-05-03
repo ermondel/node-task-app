@@ -45,13 +45,13 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log('delete error');
     // });
 
-    db.collection('tasks').deleteOne(
-        { description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." }
-    ).then(result => {
-        console.log(`successfully deleted: ${result.deletedCount}`);
-    }).catch(error => {
-        console.log('delete error');
-    });
+    // db.collection('tasks').deleteOne(
+    //     { description: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." }
+    // ).then(result => {
+    //     console.log(`successfully deleted: ${result.deletedCount}`);
+    // }).catch(error => {
+    //     console.log('delete error');
+    // });
 
     client.close();
 });
