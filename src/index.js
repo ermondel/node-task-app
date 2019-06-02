@@ -6,18 +6,6 @@ const taskRouter = require('./routers/task');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.use((req, res, next) => {
-//     if (req.method === 'GET') {
-//         res.send('GET requests are disabled');
-//     } else {
-//         next();
-//     }
-// });
-
-// app.use((req, res, next) => {
-//     res.status(503).send('The site is temporarily under maintenance.');
-// });
-
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
@@ -25,14 +13,18 @@ app.use(taskRouter);
 app.listen(PORT, () => { console.log('Server is up on port: ' + PORT); });
 
 //
-// const jwt = require('jsonwebtoken');
 
-// const myFunction = async () => {
-//     const token = jwt.sign({ _id: 'abc123'}, 'Loremipsumdolor', { expiresIn: '7 days' });
-//     console.log(token);
+const Task = require('./models/task');
+const User = require('./models/user');
 
-//     const data = jwt.verify(token, 'Loremipsumdolor');
-//     console.log(data);
-// }
+const main = async () => {
+    // const task = await Task.findById('5cf3aa01c901e511ece9469d');
+    // await task.populate('owner').execPopulate();
+    // console.log(task.owner);
 
-// myFunction();
+    const user = await User.findById('5cf14b7eb55ea716c0283b45');
+    await user.populate('tasks').execPopulate();
+    console.log(user.tasks);
+}
+
+main();
