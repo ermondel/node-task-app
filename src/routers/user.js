@@ -1,8 +1,11 @@
 const express = require('express');
-const router = new express.Router();
-const User = require('../models/user');
-const auth = require('../middleware/auth');
-const multer = require('multer');
+const router  = new express.Router();
+const User    = require('../models/user');
+const auth    = require('../middleware/auth');
+const multer  = require('multer');
+const sharp   = require('sharp'); 
+
+
 const upload = multer({
     limits: {
         fileSize: 1000000
@@ -14,6 +17,7 @@ const upload = multer({
         callback(undefined, true);
     }
 });
+
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
@@ -95,7 +99,11 @@ router.delete('/users/me', auth, async (req, res) => {
 });
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-    req.user.avatar = req.file.buffer;
+    const buffer = await sharp(req.file.buffer)
+        .resize({ width: 250, height: 250 })
+        .png()
+        .toBuffer();
+    req.user.avatar = buffer;
     await req.user.save();
     res.send();
 }, (error, req, res, next) => {
@@ -120,12 +128,13 @@ router.get('/users/:id/avatar', async (req, res) => {
             throw new Error();
         }
 
-        res.set('Content-type', 'image/jpg');
+        res.set('Content-type', 'image/png');
         
         res.send(user.avatar);
     } catch (e) {
         res.status(404).send();
     }
 });
+
 
 module.exports = router;
